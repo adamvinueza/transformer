@@ -8,7 +8,7 @@ class _FSWrapper():
     """A wrapper for AbstractFileSystem implementations that sets the
     LocalFileSystem implementation if None is passed in.
     """
-    def __init__(self, fs: AbstractFileSystem) -> None:
+    def __init__(self, fs: AbstractFileSystem = None) -> None:
         if fs is None:
             # By default, use the local file system.
             self.fs = LocalFileSystem()
