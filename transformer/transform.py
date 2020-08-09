@@ -1,4 +1,5 @@
 from fsspec import AbstractFileSystem  # type: ignore
+from fsspec.core import OpenFile  # type: ignore
 from fsspec.implementations.local import LocalFileSystem  # type: ignore
 from typing import Any, Callable, Dict
 from transformer.io import Writer
@@ -26,7 +27,7 @@ class Transform(_FSWrapper):
         def disemvowel(rdr, wr):
             bufsize = 1024
             while True:
-                content = str(rdr.read(bufsize)).lower()
+                content = rdr.read(bufsize).decode('utf-8').lower()
                 if not content:
                     break
                 b = bytes()
@@ -53,8 +54,8 @@ class Transform(_FSWrapper):
             self,
             src: str,
             dest: str,
-            op: Callable[[str, Writer, Any], Any],
-            params: Any) -> None:
+            op: Callable[[OpenFile, Writer, Any], Any],
+            *params: Any) -> None:
         wr = Writer(dest, self.fs)
         with self.fs.open(src, 'rb') as rdr:
             return op(rdr, wr, *params)
@@ -68,7 +69,7 @@ class BulkTransform(_FSWrapper):
             self,
             src_dest_map: Dict[str, str],
             op: Callable[[str, Writer, Any], Any],
-            params: Any) -> None:
+            *params: Any) -> None:
         """Performs the specified operation on each file given as the key in the
         map, and writes the results to the file that is the value in the map.
         """
