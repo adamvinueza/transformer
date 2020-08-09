@@ -4,7 +4,7 @@ from typing import Any, Callable, Dict
 from transformer.io import Writer
 
 
-class _FSWrapper():
+class _FSWrapper(object):
     """A wrapper for AbstractFileSystem implementations that sets the
     LocalFileSystem implementation if None is passed in.
     """
