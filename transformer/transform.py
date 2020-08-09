@@ -19,14 +19,14 @@ class _FSWrapper(object):
 
 
 class Transform(_FSWrapper):
-    """Creates a reader from src and a Writer that performs the operation on the
-    buffered data (using the operation's parameters) and streams the result via
-    the Writer to the file at dest.
+    """Passes the specified source file through the specified transformation
+    operation (using the specified parameters), writing to the specified
+    destination file. If the destination file exists it will be overwritten.
 
     Callable Args:
         src (str): Source file path or URL.
         dest (str): Destination file path or URL.
-        op (Callable[Reader, Writer, Any], Any]): Operation to perform.
+        op (Callable[Reader, Writer, VarArg()], Any]): Operation to perform.
         params (List[Any]): Operation parameters.
     """
     def __init__(self, fs: AbstractFileSystem = None) -> None:
@@ -44,6 +44,10 @@ class Transform(_FSWrapper):
 
 
 class BulkTransform(_FSWrapper):
+    """Transforms input files into output files via the specified operation,
+    using the specified dictionary, whose keys are the input file paths and
+    whose values are the output file paths.
+    """
     def __init__(self, fs: AbstractFileSystem) -> None:
         super().__init__(fs)
 
@@ -52,9 +56,6 @@ class BulkTransform(_FSWrapper):
             src_dest_map: Dict[str, str],
             op: Callable[[str, Writer, VarArg()], Any],
             params: List[Any]) -> None:
-        """Performs the specified operation on each file given as the key in the
-        map, and writes the results to the file that is the value in the map.
-        """
         tr = Transform(self.fs)
         for src, dest in src_dest_map.items():
             tr(src, dest, op, *params)
