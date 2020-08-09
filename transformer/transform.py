@@ -47,7 +47,7 @@ class Transform(_FSWrapper):
         params (List[Any]): Operation parameters.
     """
     def __init__(self, fs: AbstractFileSystem = None) -> None:
-        super(fs)
+        super(Transform, fs)
 
     def __call__(
             self,
@@ -62,7 +62,7 @@ class Transform(_FSWrapper):
 
 class BulkTransform(_FSWrapper):
     def __init__(self, fs: AbstractFileSystem) -> None:
-        super(fs)
+        super(BulkTransform, fs)
 
     def __call__(
             self,
