@@ -1,7 +1,7 @@
 from fsspec import AbstractFileSystem  # type: ignore
 from fsspec.implementations.local import LocalFileSystem  # type: ignore
-from typing import Any, Callable, Dict, List
-from io import Writer
+from typing import Any, Callable, Dict
+from transformer.io import Writer
 
 
 class _FSWrapper():
@@ -54,7 +54,7 @@ class Transform(_FSWrapper):
             src: str,
             dest: str,
             op: Callable[[str, Writer, Any], Any],
-            params: List[Any] = None) -> None:
+            params: Any) -> None:
         wr = Writer(dest, self.fs)
         with self.fs.open(src, 'rb') as rdr:
             return op(rdr, wr, *params)
@@ -67,8 +67,8 @@ class BulkTransform(_FSWrapper):
     def __call__(
             self,
             src_dest_map: Dict[str, str],
-            op: Callable[[Reader, Writer, Any], Any],
-            params: List[Any] = None) -> None:
+            op: Callable[[str, Writer, Any], Any],
+            params: Any) -> None:
         """Performs the specified operation on each file given as the key in the
         map, and writes the results to the file that is the value in the map.
         """

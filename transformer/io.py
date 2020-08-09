@@ -1,6 +1,13 @@
 from fsspec import AbstractFileSystem  # type: ignore
-from fsspec.core import OpenFile  # type: ignore
 from typing import Any
+
+
+class JustChecking():
+    def __init__(self) -> None:
+        self.text = "Just checking!"
+
+    def __call__(self) -> str:
+        return self.text
 
 
 class Writer():
