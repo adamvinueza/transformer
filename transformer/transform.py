@@ -40,8 +40,7 @@ class Transform(_FSWrapper):
             params: List[Any]) -> None:
         wr = Writer(dest, self.fs)
         with self.fs.open(src, 'rb') as rdr:
-            if params:
-                return op(rdr, wr, *params)
+            return op(rdr, wr, *params)
 
 
 class BulkTransform(_FSWrapper):
