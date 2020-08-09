@@ -46,7 +46,7 @@ class Transform(_FSWrapper):
         op (Callable[Reader, Writer, Any], Any]): Operation to perform.
         params (List[Any]): Operation parameters.
     """
-    def __init__(self, fs: AbstractFileSystem) -> None:
+    def __init__(self, fs: AbstractFileSystem = None) -> None:
         super(fs)
 
     def __call__(
