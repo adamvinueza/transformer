@@ -54,7 +54,7 @@ class BulkTransform(_FSWrapper):
     def __call__(
             self,
             src_dest_map: Dict[str, str],
-            op: Callable[[str, Writer, VarArg()], Any],
+            op: Callable[[OpenFile, Writer, VarArg()], Any],
             params: List[Any]) -> None:
         tr = Transform(self.fs)
         for src, dest in src_dest_map.items():
