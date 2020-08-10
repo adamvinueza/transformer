@@ -8,4 +8,5 @@ setup(name='transformer',
       author_email='adamvinueza@pm.me',
       license='MIT',
       packages=['transformer'],
+      install_requires=['fsspec==0.8.0'],
       zip_safe=False)
