@@ -30,7 +30,7 @@ class Transform(_FSWrapper):
     Callable Args:
         src (str): Source file path or URL.
         dest (str): Destination file path or URL.
-        op (Callable[Reader, Writer, VarArg()], Any]): Operation to perform.
+        op (Callable[OpenFile, Writer, VarArg()], Any]): Operation to perform.
         params (List[Any]): Operation parameters.
     """
     def __init__(
