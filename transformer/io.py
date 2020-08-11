@@ -7,7 +7,7 @@ class Writer():
     def __init__(self, dest: str, fs: AbstractFileSystem, ow: bool) -> None:
         if fs.exists(dest) and not ow:
             raise FileExistsError(
-                "File {dest} exists and overwrite is not set")
+                f"File {dest} exists and overwrite is not set")
         self.fout = fs.open(dest, 'wb')
 
     def __call__(self, data: Any) -> bool:
