@@ -13,8 +13,8 @@ class _FSWrapper(object):
     def __init__(
             self,
             fs: AbstractFileSystem = None,
-            ow: bool = False) -> None:
-        self.overwrite = ow
+            overwrite: bool = False) -> None:
+        self.overwrite = overwrite
         if fs is None:
             # By default, use the local file system.
             self.fs = LocalFileSystem()
@@ -36,8 +36,8 @@ class Transform(_FSWrapper):
     def __init__(
             self,
             fs: AbstractFileSystem = None,
-            ow: bool = False) -> None:
-        super().__init__(fs, ow)
+            overwrite: bool = False) -> None:
+        super().__init__(fs, overwrite)
 
     def __call__(
             self,
@@ -55,8 +55,11 @@ class BulkTransform(_FSWrapper):
     using the specified dictionary, whose keys are the input file paths and
     whose values are the output file paths.
     """
-    def __init__(self, fs: AbstractFileSystem, ow: bool = False) -> None:
-        super().__init__(fs, ow)
+    def __init__(
+            self,
+            fs: AbstractFileSystem,
+            overwrite: bool = False) -> None:
+        super().__init__(fs, overwrite)
 
     def __call__(
             self,
