@@ -13,11 +13,12 @@ cd ../s3
 ```
 
 ## Disemvowel
-Removes all the vowels from one file and stores the result in another.
+The function `disemvowel.py` removes all the vowels from one file and stores
+the result in another.
 
-The `local` directory a local file and stores the result in a local file.
+The `local` directory contains a program that applies the `disemvowel` function
+to files in the local file system.
 
-## S3-Disemvowel
-Removes all the vowels from a file in one S3 bucket and stores the result in
-another S3 bucket.
+The `s3` directory contains a program that applies the `disemvowel` function
+to files in the S3 file system.
 
