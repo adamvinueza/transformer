@@ -1,7 +1,9 @@
 #!/usr/bin/env python
+import sys
+sys.path.append('..')
+from disemvowel import disemvowel
 from fsspec.implementations.local import LocalFileSystem
 from transformer.transform import Transform
-from disemvowel import disemvowel
 
 if __name__ == '__main__':
     # local file system and local files
