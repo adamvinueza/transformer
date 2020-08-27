@@ -1,7 +1,10 @@
 #!/usr/bin/env python
+import sys
+sys.path.append('..')
+from disemvowel import disemvowel
+
 import s3fs
 from transformer.transform import Transform
-from disemvowel import disemvowel
 
 if __name__ == '__main__':
     # S3 file system and paths to S3 objects
