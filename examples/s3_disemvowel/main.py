@@ -1,13 +1,13 @@
 #!/usr/bin/env python
-from fsspec.implementations.local import LocalFileSystem
+import s3fs
 from transformer.transform import Transform
 from disemvowel import disemvowel
 
 if __name__ == '__main__':
-    # local file system and local files
-    fs = LocalFileSystem()
-    src = "banana.txt"
-    dest = "bnn.txt"
+    # S3 file system and paths to S3 objects
+    fs = s3fs.S3FileSystem(anon=False)
+    src = "s3://test-transform-in/banana.txt"
+    dest = "s3://test-transform-out/bnn.txt"
 
     tr = Transform(fs=fs, overwrite=True)
     tr(src, dest, disemvowel, [])
