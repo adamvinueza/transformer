@@ -23,9 +23,12 @@ class _FSWrapper(object):
 
 
 class Transform(_FSWrapper):
-    """Passes the specified source file through the specified transformation
-    operation (using the specified parameters), writing to the specified
-    destination file. If the destination file exists it will be overwritten.
+    """Reads a file, runs it through a transformation, and writes the result to
+    a destination.
+
+    Args:
+        fs (AbstractFileSystem): A file system.
+        overwrite (bool) = False: If the destination file exists, overwrite it.
 
     Callable Args:
         src (str): Source file path or URL.
