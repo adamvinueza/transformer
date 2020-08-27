@@ -5,11 +5,11 @@
 # first run against local file system
 cd <exampledir>/local
 pip install ../../..
-./main.py
+./main.py LCL_SRC LCL_DEST [-w]
 
 # now run the same operation against S3
 cd ../s3
-./main.py
+./main.py S3_SRC S3_DEST [-w]
 ```
 
 ## Disemvowel
