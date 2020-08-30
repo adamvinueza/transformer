@@ -11,4 +11,3 @@ def disemvowel(rdr, wr) -> None:
         wr(b)
         if not content:
             break
-

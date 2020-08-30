@@ -12,14 +12,22 @@ class _FSWrapper(object):
     """
     def __init__(
             self,
+            src_fs: AbstractFileSystem = None,
+            dest_fs: AbstractFileSystem = None,
             fs: AbstractFileSystem = None,
             overwrite: bool = False) -> None:
         self.overwrite = overwrite
-        if fs is None:
-            # By default, use the local file system.
-            self.fs = LocalFileSystem()
+        if src_fs is None and dest_fs is None:
+            if fs is None:
+                fs = LocalFileSystem()
+            src_fs = fs
+            dest_fs = fs
         else:
-            self.fs = fs
+            if src_fs is None or dest_fs is None:
+                raise ValueError(
+                    "if one of src_fs and dest_fs is (not) None, both must be")
+        self.src_fs = src_fs
+        self.dest_fs = dest_fs
 
 
 class Transform(_FSWrapper):
@@ -38,9 +46,11 @@ class Transform(_FSWrapper):
     """
     def __init__(
             self,
+            src_fs: AbstractFileSystem = None,
+            dest_fs: AbstractFileSystem = None,
             fs: AbstractFileSystem = None,
             overwrite: bool = False) -> None:
-        super().__init__(fs, overwrite)
+        super().__init__(src_fs, dest_fs, fs, overwrite)
 
     def __call__(
             self,
@@ -48,8 +58,8 @@ class Transform(_FSWrapper):
             dest: str,
             op: Callable[[OpenFile, Writer, VarArg()], Any],
             params: List[Any]) -> None:
-        wr = Writer(dest, self.fs, self.overwrite)
-        with self.fs.open(src, 'rb') as rdr:
+        wr = Writer(dest, self.dest_fs, self.overwrite)
+        with self.src_fs.open(src, 'rb') as rdr:
             return op(rdr, wr, *params)
 
 
@@ -60,15 +70,19 @@ class BulkTransform(_FSWrapper):
     """
     def __init__(
             self,
-            fs: AbstractFileSystem,
+            src_fs: AbstractFileSystem = None,
+            dest_fs: AbstractFileSystem = None,
+            fs: AbstractFileSystem = None,
             overwrite: bool = False) -> None:
-        super().__init__(fs, overwrite)
+        super().__init__(src_fs, dest_fs, fs, overwrite)
 
     def __call__(
             self,
             src_dest_map: Dict[str, str],
             op: Callable[[OpenFile, Writer, VarArg()], Any],
             params: List[Any]) -> None:
-        tr = Transform(self.fs)
+        tr = Transform(src_fs=self.src_fs,
+                       dest_fs=self.dest_fs,
+                       overwrite=self.overwrite)
         for src, dest in src_dest_map.items():
             tr(src, dest, op, *params)

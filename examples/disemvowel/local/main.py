@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser
 import sys
-sys.path.append('..')
-from disemvowel import disemvowel
-
 from fsspec.implementations.local import LocalFileSystem
 from transformer.transform import Transform
+sys.path.append('..')
+from disemvowel import disemvowel # noqa
 
 '''
 Sample usage:

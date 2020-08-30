@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import sys
-sys.path.append('..')
-import gpg
-
-from transformer.transform import Transform
 import s3fs
+from transformer.transform import Transform
+sys.path.append('..')
+import gpg # noqa
 
 if __name__ == '__main__':
-    pass
+    s3 = s3fs.S3FileSystem(anon=False)
+    _ = Transform()

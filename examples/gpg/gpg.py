@@ -1,5 +1,6 @@
 import gnupg
 
+
 def encrypt(rdr, wr, home, passphrase):
     gpg = gnupg.GPG(gnupghome=home)
     gpg.on_data = wr

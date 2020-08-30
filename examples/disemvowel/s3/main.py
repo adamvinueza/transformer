@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser
 import sys
-sys.path.append('..')
-from disemvowel import disemvowel
-
 import s3fs
 from transformer.transform import Transform
+sys.path.append('..')
+from disemvowel import disemvowel # noqa
 
 '''
 Sample usage:
