@@ -9,23 +9,25 @@ from transformer.io import Writer
 class _FSWrapper(object):
     """A wrapper for AbstractFileSystem implementations that sets the
     LocalFileSystem implementation if None is passed in.
+
+    Args:
+        src_fs (AbstractFileSystem): The source file system.
+        dest_fs (AbstractFileSystem): The destination file system.
+        overwrite (bool) = False: If the destination file exists, overwrite it.
     """
     def __init__(
             self,
             src_fs: AbstractFileSystem = None,
             dest_fs: AbstractFileSystem = None,
-            fs: AbstractFileSystem = None,
             overwrite: bool = False) -> None:
         self.overwrite = overwrite
         if src_fs is None and dest_fs is None:
-            if fs is None:
-                fs = LocalFileSystem()
-            src_fs = fs
-            dest_fs = fs
-        else:
-            if src_fs is None or dest_fs is None:
-                raise ValueError(
-                    "if one of src_fs and dest_fs is (not) None, both must be")
+            src_fs = dest_fs = LocalFileSystem()
+        elif bool(src_fs is None) != bool(dest_fs is None):
+            if self.src_fs is None:
+                raise ValueError("src_fs is empty")
+            if self.dest_fs is None:
+                raise ValueError("dest_fs is empty")
         self.src_fs = src_fs
         self.dest_fs = dest_fs
 
@@ -35,7 +37,8 @@ class Transform(_FSWrapper):
     a destination.
 
     Args:
-        fs (AbstractFileSystem): A file system.
+        src_fs (AbstractFileSystem): The source file system.
+        dest_fs (AbstractFileSystem): The destination file system.
         overwrite (bool) = False: If the destination file exists, overwrite it.
 
     Callable Args:
@@ -48,9 +51,8 @@ class Transform(_FSWrapper):
             self,
             src_fs: AbstractFileSystem = None,
             dest_fs: AbstractFileSystem = None,
-            fs: AbstractFileSystem = None,
             overwrite: bool = False) -> None:
-        super().__init__(src_fs, dest_fs, fs, overwrite)
+        super().__init__(src_fs, dest_fs, overwrite)
 
     def __call__(
             self,
@@ -67,14 +69,23 @@ class BulkTransform(_FSWrapper):
     """Transforms input files into output files via the specified operation,
     using the specified dictionary, whose keys are the input file paths and
     whose values are the output file paths.
+
+    Args:
+        src_fs (AbstractFileSystem): The source file system.
+        dest_fs (AbstractFileSystem): The destination file system.
+        overwrite (bool) = False: If the destination file exists, overwrite it.
+
+    Callable Args:
+        src_dest_map (dict): Mapping of source files to destination files.
+        op (Callable[OpenFile, Writer, VarArg()], Any]): Operation to perform.
+        params (List[Any]): Operation parameters.
     """
     def __init__(
             self,
             src_fs: AbstractFileSystem = None,
             dest_fs: AbstractFileSystem = None,
-            fs: AbstractFileSystem = None,
             overwrite: bool = False) -> None:
-        super().__init__(src_fs, dest_fs, fs, overwrite)
+        super().__init__(src_fs, dest_fs, overwrite)
 
     def __call__(
             self,
