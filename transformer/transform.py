@@ -15,6 +15,10 @@ class _FSWrapper(object):
         dest_fs (AbstractFileSystem): The destination file system.
         overwrite (bool) = False: If the destination file exists, overwrite it.
     """
+    src_fs: AbstractFileSystem
+    dest_fs: AbstractFileSystem
+    overwrite: bool
+
     def __init__(
             self,
             src_fs: AbstractFileSystem = None,
@@ -24,9 +28,9 @@ class _FSWrapper(object):
         if src_fs is None and dest_fs is None:
             src_fs = dest_fs = LocalFileSystem()
         elif bool(src_fs is None) != bool(dest_fs is None):
-            if self.src_fs is None:
+            if src_fs is None:
                 raise ValueError("src_fs is empty")
-            if self.dest_fs is None:
+            if dest_fs is None:
                 raise ValueError("dest_fs is empty")
         self.src_fs = src_fs
         self.dest_fs = dest_fs
