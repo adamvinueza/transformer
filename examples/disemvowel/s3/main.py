@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser
 import sys
-sys.path.append('..')
-from disemvowel import disemvowel
-
 import s3fs
 from transformer.transform import Transform
+sys.path.append('..')
+from disemvowel import disemvowel # noqa
 
 '''
 Sample usage:
@@ -27,7 +26,7 @@ if __name__ == '__main__':
     # S3 file system and paths to S3 objects
     fs = s3fs.S3FileSystem(anon=False)
 
-    tr = Transform(fs=fs, overwrite=args.overwrite)
+    tr = Transform(src_fs=fs, dest_fs=fs, overwrite=args.overwrite)
     tr(src, dest, disemvowel, [])
     with fs.open(dest, 'r') as rdr:
         for line in rdr:

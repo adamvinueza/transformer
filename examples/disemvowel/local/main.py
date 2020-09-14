@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser
 import sys
-sys.path.append('..')
-from disemvowel import disemvowel
-
 from fsspec.implementations.local import LocalFileSystem
 from transformer.transform import Transform
+sys.path.append('..')
+from disemvowel import disemvowel # noqa
 
 '''
 Sample usage:
@@ -27,7 +26,7 @@ if __name__ == '__main__':
     # local file system and local files
     fs = LocalFileSystem()
 
-    tr = Transform(fs=fs, overwrite=args.overwrite)
+    tr = Transform(src_fs=fs, dest_fs=fs, overwrite=args.overwrite)
     tr(src, dest, disemvowel, [])
     with fs.open(dest, 'r') as rdr:
         for line in rdr:
