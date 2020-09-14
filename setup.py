@@ -6,7 +6,7 @@ setup(name='transformer',
       url='http://github.com/adamvinueza/transformer',
       author='Adam Vinueza',
       author_email='adamvinueza@pm.me',
-      license='MIT'
+      license='MIT',
       packages=['transformer'],
       install_requires=['fsspec==0.8.0', 'mypy-extensions==0.4.3'],
       zip_safe=False)
