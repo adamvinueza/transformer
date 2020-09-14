@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='transformer',
-      version='0.3',
+      version='0.4',
       description='Library for transforming data via streaming files',
       url='http://github.com/adamvinueza/transformer',
       author='Adam Vinueza',
