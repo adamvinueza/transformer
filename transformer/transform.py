@@ -63,7 +63,7 @@ class Transform(_FSWrapper):
             src: str,
             dest: str,
             op: Callable[[OpenFile, Writer, VarArg()], Any],
-            params: List[Any]) -> None:
+            params: List[Any]) -> Any:
         wr = Writer(dest, self.dest_fs, self.overwrite)
         with self.src_fs.open(src, 'rb') as rdr:
             return op(rdr, wr, *params)
@@ -95,9 +95,9 @@ class BulkTransform(_FSWrapper):
             self,
             src_dest_map: Dict[str, str],
             op: Callable[[OpenFile, Writer, VarArg()], Any],
-            params: List[Any]) -> None:
+            params: List[Any]) -> Any:
         tr = Transform(src_fs=self.src_fs,
                        dest_fs=self.dest_fs,
                        overwrite=self.overwrite)
         for src, dest in src_dest_map.items():
-            tr(src, dest, op, *params)
+            return tr(src, dest, op, *params)
