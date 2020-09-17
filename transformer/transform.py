@@ -68,6 +68,14 @@ class Transform(_FSWrapper):
         with self.src_fs.open(src, 'rb') as rdr:
             return op(rdr, wr, *params)
 
+    def copy(self, src: str, dest: str) -> None:
+        """Copies src to dest.
+        Presumes src and dest paths are valid in the respective file systems.
+        """
+        with self.src_fs.open(src, 'rb') as rdr:
+            with self.dest_fs.open(dest, 'wb') as wr:
+                wr.write(rdr.read())
+
 
 class BulkTransform(_FSWrapper):
     """Transforms input files into output files via the specified operation,
