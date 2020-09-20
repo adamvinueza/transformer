@@ -68,13 +68,35 @@ class Transform(_FSWrapper):
         with self.src_fs.open(src, 'rb') as rdr:
             return op(rdr, wr, *params)
 
-    def copy(self, src: str, dest: str) -> None:
+    def copy(self, src: str, dest: str, bufsize: int = -1) -> None:
         """Copies src to dest.
-        Presumes src and dest paths are valid in the respective file systems.
+        Both src and dest paths must be valid in the respective file systems.
         """
-        with self.src_fs.open(src, 'rb') as rdr:
-            with self.dest_fs.open(dest, 'wb') as wr:
+        with self.src_fs.open(src, 'rb', bufsize) as rdr:
+            with self.dest_fs.open(dest, 'wb', bufsize) as wr:
                 wr.write(rdr.read())
+
+    def fcopy(self, 
+              src: str,
+              dest: str,
+              fltr: Callable,
+              bufsize: int = -1,
+              **kwargs) -> None:
+        """Copies src to dest, passing read bytes through a filter.
+
+        The filter takes a sequence of bytes and whatever keyword arguments are
+        passed in, and returns a sequence of bytes.
+
+        Both src and dest paths must be valid in the respective file systems.
+        """
+        with self.src_fs.open(src, 'rb', bufsize) as rdr:
+            with self.dest_fs.open(dest, 'wb', bufsize) as wr:
+                while True:
+                    b = rdr.read(bufsize)
+                    if not b:
+                        wr.flush()
+                        break
+                    wr.write(fltr(b, **kwargs))
 
 
 class BulkTransform(_FSWrapper):
